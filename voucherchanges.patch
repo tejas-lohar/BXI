@@ -1,0 +1,2002 @@
+diff --git a/package.json b/package.json
+index 45de00c9..73b85a59 100644
+--- a/package.json
++++ b/package.json
+@@ -29,6 +29,7 @@
+     "draftjs-to-html": "^0.9.1",
+     "emoji-picker-react": "^4.4.8",
+     "faker": "^6.6.6",
++    "formik": "^2.2.9",
+     "framer-motion": "^9.0.7",
+     "html-to-image": "^1.11.11",
+     "jspdf": "^2.5.1",
+@@ -66,6 +67,7 @@
+     "socket.io-client": "^4.6.1",
+     "timeago.js": "^4.0.2",
+     "web-vitals": "^2.1.4",
++    "yup": "^1.1.1",
+     "zod": "^3.20.2"
+   },
+   "scripts": {
+diff --git a/src/components/Header/Header.jsx b/src/components/Header/Header.jsx
+index 7953b8a1..1393d75a 100644
+--- a/src/components/Header/Header.jsx
++++ b/src/components/Header/Header.jsx
+@@ -80,7 +80,7 @@ const Header = () => {
+   };
+   
+   useEffect(() => {
+-    fetchompanyType();
++    // fetchompanyType();
+   }, [NavigateFunction]);
+ 
+   //  split the location pathname and get the last element
+diff --git a/src/pages/AddProductAllPages/CardOne.jsx b/src/pages/AddProductAllPages/CardOne.jsx
+index d8792fd8..ec30b2d9 100644
+--- a/src/pages/AddProductAllPages/CardOne.jsx
++++ b/src/pages/AddProductAllPages/CardOne.jsx
+@@ -1,234 +1,232 @@
+ import {
+-    Box,
+-    Button,
+-    Card,
+-    CardContent,
+-    Dialog,
+-    DialogActions,
+-    DialogContent,
+-    DialogTitle,
+-    Grid,
+-    Typography,
+-  } from "@mui/material";
+-  import DinnerDiningIcon from "@mui/icons-material/DinnerDining";
+-  import BxiLogo from "../../assets/BXI_LOGO.png";
+-  import RestaurantImage from "../../assets/restaurant1.jpg";
+-  import FoodImage from "../../assets/food.jpg";
+-  import Shoe from "../../assets/shoe5.jfif";
+-  import { EditorState, convertToRaw } from "draft-js";
+-  import { Editor } from "react-draft-wysiwyg";
+-  import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+-  import { useState } from "react";
+-  import LocalDrinkIcon from "@mui/icons-material/LocalDrink";
+-  
+-  const CardOne = ({
+-    leftCard = false,
+-    rightCard = false,
+-    tempOne = false,
+-    tempTwo = false,
+-    tempThree = false,
+-    tempFour = false,
+-    tempFive = false,
+-    cardBgColor,
+-    cardImage,
+-    myRefBack,
+-    myRefFront,
+-  }) => {
+-    const [open, setOpen] = useState(false);
+-    const [hoveredText, setHoveredText] = useState("");
+-    // Left Card
+-    const [leftCardData, setLeftCardData] = useState({
+-      offerValue: "$1,00,000",
+-      validity: "4 months",
+-      redemptionType: "online",
+-      cardName: "Gift Card",
+-      productName: "Product name",
+-      productDescription: "Lorem ipsum dolor sit amet consectetur.",
+-      adviceText: "Spend it on something you love!",
+-    });
+-  
+-    // Right Card
+-    const [rightCardData, setRightCardData] = useState({
+-      inclusionPoint1: "Lorem ipsum dolor sit amet consectetur.",
+-      inclusionPoint2: "Nibh elit nibh neque gravida sed lorem nisi lorem ipsum.",
+-      inclusionPoint3:
+-        "Auctor neque eu vulputate gravida ultrices ipsum lectus massa aliquet.",
+-      inclusionPoint4: "hello Lorem ipsum dolor sit amet consectetur.",
+-      exclusionPoint1: "Lorem one ipsum dolor sit amet consectetur.",
+-      exclusionPoint2:
+-        "Nibh elit two nibh neque gravida sed lorem nisi lorem ipsum.",
+-      exclusionPoint3:
+-        "Auctor neque three eu vulputate gravida ultrices ipsum lectus massa aliquet.",
+-      webUrl: "www.bxiworld.com",
+-    });
+-  
+-    const [editorState, setEditorState] = useState(() =>
+-      EditorState.createEmpty()
+-    );
+-    const handleOpen = (event) => {
+-      const text = event.target.innerText;
+-      setHoveredText(text);
+-      setOpen(true);
+-    };
+-  
+-    const handleClose = () => {
+-      setOpen(false);
+-    };
+-  
+-    const handleSubmit = () => {
+-      // const editedText = draftToHtml(
+-      //   convertToRaw(editorState.getCurrentContent())
+-      // );
+-      const contentState = editorState.getCurrentContent();
+-      const editedText = convertToRaw(contentState);
+-  
+-      // setting Left card data
+-      setLeftCardData((prevState) => {
+-        return {
+-          ...prevState,
+-          offerValue:
+-            hoveredText === `Value ${prevState.offerValue}`
+-              ? editedText.blocks[0].text
+-              : prevState.offerValue,
+-          validity:
+-            hoveredText === `Validity : ${prevState.validity}`
+-              ? editedText.blocks[0].text
+-              : prevState.validity,
+-          redemptionType:
+-            hoveredText === `Redemption Type : ${prevState.redemptionType}`
+-              ? editedText.blocks[0].text
+-              : prevState.redemptionType,
+-          cardName:
+-            hoveredText === prevState.cardName
+-              ? editedText.blocks[0].text
+-              : prevState.cardName,
+-          productName:
+-            hoveredText === prevState.productName
+-              ? editedText.blocks[0].text
+-              : prevState.productName,
+-          productDescription:
+-            hoveredText === prevState.productDescription
+-              ? editedText.blocks[0].text
+-              : prevState.productDescription,
+-          adviceText:
+-            hoveredText === prevState.adviceText
+-              ? editedText.blocks[0].text
+-              : prevState.adviceText,
+-        };
+-      });
+-      // setting Right card data
+-      setRightCardData((prevState) => {
+-        return {
+-          ...prevState,
+-          inclusionPoint1:
+-            hoveredText === prevState.inclusionPoint1
+-              ? editedText.blocks[0].text
+-              : prevState.inclusionPoint1,
+-          inclusionPoint2:
+-            hoveredText === prevState.inclusionPoint2
+-              ? editedText.blocks[0].text
+-              : prevState.inclusionPoint2,
+-          inclusionPoint3:
+-            hoveredText === prevState.inclusionPoint3
+-              ? editedText.blocks[0].text
+-              : prevState.inclusionPoint3,
+-          inclusionPoint4:
+-            hoveredText === prevState.inclusionPoint4
+-              ? editedText.blocks[0].text
+-              : prevState.inclusionPoint4,
+-          exclusionPoint1:
+-            hoveredText === prevState.exclusionPoint1
+-              ? editedText.blocks[0].text
+-              : prevState.exclusionPoint1,
+-          exclusionPoint2:
+-            hoveredText === prevState.exclusionPoint2
+-              ? editedText.blocks[0].text
+-              : prevState.exclusionPoint2,
+-          exclusionPoint3:
+-            hoveredText === prevState.exclusionPoint3
+-              ? editedText.blocks[0].text
+-              : prevState.exclusionPoint3,
+-          webUrl:
+-            hoveredText === prevState.webUrl
+-              ? editedText.blocks[0].text
+-              : prevState.webUrl,
+-        };
+-      });
+-  
+-      setOpen(false);
+-    };
+-    return (
+-      <>
+-        <Dialog open={open} onClose={handleClose} sx={{ zIndex: 100 }}>
+-          <DialogTitle>Edit text: {hoveredText}</DialogTitle>
+-          <DialogContent>
+-            <Editor
+-              editorState={editorState}
+-              onEditorStateChange={setEditorState}
+-            />
+-          </DialogContent>
+-          <DialogActions>
+-            <Button onClick={handleClose}>Cancel</Button>
+-            <Button onClick={handleSubmit}>Save</Button>
+-          </DialogActions>
+-        </Dialog>
+-        <Card
+-          sx={{
+-            backgroundImage:
+-              leftCard &&
+-              `url( ${
+-                // tempOne
+-                //   ? Shoe
+-                tempTwo ? RestaurantImage : tempThree ? FoodImage : ""
+-              })`,
+-            background: tempOne ? cardBgColor : "",
+-            backgroundRepeat: "no-repeat",
+-            backgroundPosition: "center",
+-            backgroundSize: "cover",
+-            position: "relative",
+-            borderRadius: tempTwo
+-              ? "8.70283px 8.70283px 0 0"
+-              : tempThree
++  Box,
++  Button,
++  Card,
++  CardContent,
++  Dialog,
++  DialogActions,
++  DialogContent,
++  DialogTitle,
++  Grid,
++  Typography,
++  TextField,
++  FormControl,
++  ThemeProvider,
++  Select,
++  MenuItem,
++  Input
++} from "@mui/material";
++
++
++import { makeStyles } from '@material-ui/core/styles';
++import DinnerDiningIcon from "@mui/icons-material/DinnerDining";
++import BxiLogo from "../../assets/BXI_LOGO.png";
++import RestaurantImage from "../../assets/restaurant1.jpg";
++import FoodImage from "../../assets/food.jpg";
++import Shoe from "../../assets/shoe5.jfif";
++import { EditorState, convertToRaw } from "draft-js";
++import { Editor } from "react-draft-wysiwyg";
++import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
++import { useState } from "react";
++import LocalDrinkIcon from "@mui/icons-material/LocalDrink";
++import { useFormik } from 'formik';
++import * as Yup from 'yup';
++import { voucherStyle } from '../AddProductAllPages/EditVoucherTemplate/EditVoucherStyle'
++import ProductAddTheme from "../../components/GlobalStyle/MaterialUiGlobalStyle";
++import { z } from "zod";
++import { zodResolver } from "@hookform/resolvers/zod";
++import { useForm } from "react-hook-form";
++
++// offerValue: "$1,00,000",
++// validity: "4 months",
++// redemptionType: "online",
++// cardName: "Gift Card",
++// productName: "Product name",
++// productDescription: "Lorem ipsum dolor sit amet consectetur.",
++// adviceText: "Spend it on something you love!",
++
++
++const validationSchema = Yup.object().shape({
++  productName: Yup.string().required('This field is required.'),
++  productDescription: Yup.string().required('This field is required.'),
++  adviceText: Yup.string().required('This field is required.'),
++});
++
++const CardOne = ({
++  leftCard = false,
++  rightCard = false,
++  tempOne = false,
++  tempTwo = false,
++  tempThree = false,
++  tempFour = false,
++  tempFive = false,
++  cardBgColor,
++  cardImage,
++  myRefBack,
++  myRefFront,
++  showLeftEdit = false,
++  closePopup,
++  category,
++  templateId,
++  productData
++}) => {
++
++  const classes = voucherStyle()
++
++  const [isSubmitting, setIsSubmitting] = useState(false);
++
++  const [open, setOpen] = useState(false);
++  const [hoveredText, setHoveredText] = useState("");
++  // Left Card
++  const [leftCardData, setLeftCardData] = useState({
++    offerValue: "$1,00,000",
++    validity: "4 months",
++    redemptionType: "online",
++    cardName: "Gift Card",
++    productName: "Product name",
++    productDescription: "Lorem ipsum dolor sit amet consectetur.",
++    adviceText: "Spend it on something you love!",
++  });
++
++  // Right Card
++  const [rightCardData, setRightCardData] = useState({
++    inclusionPoint1: "Lorem ipsum dolor sit amet consectetur.",
++    inclusionPoint2: "Nibh elit nibh neque gravida sed lorem nisi lorem ipsum.",
++    inclusionPoint3:
++      "Auctor neque eu vulputate gravida ultrices ipsum lectus massa aliquet.",
++    inclusionPoint4: "hello Lorem ipsum dolor sit amet consectetur.",
++    exclusionPoint1: "Lorem one ipsum dolor sit amet consectetur.",
++    exclusionPoint2:
++      "Nibh elit two nibh neque gravida sed lorem nisi lorem ipsum.",
++    exclusionPoint3:
++      "Auctor neque three eu vulputate gravida ultrices ipsum lectus massa aliquet.",
++    webUrl: "www.bxiworld.com",
++  });
++  const initialValues = {
++    productName: "Product name",
++    productDescription: "Lorem ipsum dolor sit amet consectetur.",
++    adviceText: "Spend it on something you love!"
++  };
++
++  const formik = useFormik({
++    initialValues,
++    validationSchema,
++    onSubmit: values => {
++      setIsSubmitting(true);
++      // Handle form submission
++    },
++  });
++
++  const [editorState, setEditorState] = useState(() =>
++    EditorState.createEmpty()
++  );
++  const handleOpen = (event) => {
++    const text = event.target.innerText;
++    setHoveredText(text);
++    setOpen(true);
++  };
++
++  const handleClose = () => {
++    closePopup()
++  };
++
++
++  let bgImage = '';
++  switch (templateId) {
++    case 'Template1':
++      bgImage = Shoe
++      break
++    case 'Template2':
++      bgImage = leftCard ? cardImage ? cardImage : RestaurantImage : ''
++      break
++    case 'Template3':
++      bgImage = leftCard ? cardImage ? cardImage : FoodImage : ''
++      break
++  }
++
++
++
++  return (
++    <>
++      <Card
++        sx={{
++          backgroundImage: `url( ${bgImage})`,
++          background: cardBgColor,
++          backgroundRepeat: "no-repeat",
++          backgroundPosition: "center",
++          backgroundSize: "cover",
++          position: "relative",
++          borderRadius: tempTwo
++            ? "8.70283px 8.70283px 0 0"
++            : tempThree
+               ? "8.70283px"
+               : "",
+-            height: "168.85px",
+-            width: "290.61px",
+-          }}
+-          // ref={myRefFront}
+-          ref={leftCard ? myRefFront : rightCard ? myRefBack : ""}
+-        >
+-          {cardImage && tempOne && (rightCard || leftCard) && (
+-            <img
+-              style={{
+-                width: "56%",
+-                height: "80%",
+-                position: "absolute",
+-                top: 22,
+-                right: 19,
+-                zIndex: 1,
+-                filter: rightCard ? "blur(3px)" : "",
+-              }}
+-              src={cardImage}
+-              alt="cardImage"
+-            />
+-          )}
+-          <CardContent>
+-            {leftCard && tempOne && (
+-              <Box sx={{ textAlign: "center", width: "35%" }}>
+-                <Box>
+-                  <img
+-                    style={{
+-                      width: "16px",
+-                      height: "13px",
+-                      position: "absolute",
+-                      top: 14,
+-                      right: 230,
+-                      zIndex: 1,
+-                    }}
+-                    src={BxiLogo}
+-                    alt="BxiLogo"
+-                  />
+-                </Box>
++          height: "168.85px",
++          width: "290.61px",
++        }}
++        // ref={myRefFront}
++        ref={leftCard ? myRefFront : rightCard ? myRefBack : ""}
++      >
++        {cardImage && templateId == 'Template1' && (rightCard || leftCard) && (
++          <img
++            style={{
++              width: "56%",
++              height: "80%",
++              position: "absolute",
++              top: 22,
++              right: 19,
++              zIndex: 1,
++              filter: rightCard ? "blur(3px)" : "",
++            }}
++            src={cardImage}
++            alt="cardImage"
++          />
++        )}
++        <CardContent>
++          {leftCard && tempOne && (
++            <Box sx={{ textAlign: "center", width: "35%" }}>
++              <Box>
++                <img
++                  style={{
++                    width: "16px",
++                    height: "13px",
++                    position: "absolute",
++                    top: 14,
++                    right: 230,
++                    zIndex: 1,
++                  }}
++                  src={BxiLogo}
++                  alt="BxiLogo"
++                />
++              </Box>
++              <Typography
++                sx={{
++                  fontFamily: "Poppins",
++                  fontStyle: "normal",
++                  fontWeight: 400,
++                  fontSize: "4.59458px",
++                  lineHeight: "7px",
++                  color: " #1E1E1E",
++                  marginTop: "15px",
++                }}
++              >
++                Barter Exchange Of India
++              </Typography>
++              <Typography
++                sx={{
++                  fontFamily: "Poppins",
++                  fontStyle: "normal",
++                  fontWeight: 700,
++                  fontSize: "9.18915px",
++                  lineHeight: "14px",
++                  color: " #1E1E1E",
++                  marginTop: "7px",
++                }}
++              // onMouseEnter={handleOpen}
++              >
++                Value {leftCardData.offerValue}
++              </Typography>
++              <Box sx={{ marginTop: "3px" }}>
+                 <Typography
+                   sx={{
+                     fontFamily: "Poppins",
+@@ -237,402 +235,390 @@ import {
+                     fontSize: "4.59458px",
+                     lineHeight: "7px",
+                     color: " #1E1E1E",
+-                    marginTop: "15px",
+                   }}
++                // onMouseEnter={handleOpen}
+                 >
+-                  Barter Exchange Of India
++                  Validity : {productData?.validityOfVoucherValue} {productData?.validityOfVoucherUnit}
+                 </Typography>
+                 <Typography
+                   sx={{
+                     fontFamily: "Poppins",
+                     fontStyle: "normal",
+-                    fontWeight: 700,
+-                    fontSize: "9.18915px",
+-                    lineHeight: "14px",
++                    fontWeight: 400,
++                    fontSize: "4.59458px",
++                    lineHeight: "7px",
+                     color: " #1E1E1E",
+-                    marginTop: "7px",
+                   }}
+-                  onMouseEnter={handleOpen}
++                // onMouseEnter={handleOpen}
+                 >
+-                  Value {leftCardData.offerValue}
++                  Redemption Type : {productData?.redemptionType}
+                 </Typography>
+-                <Box sx={{ marginTop: "3px" }}>
+-                  <Typography
+-                    sx={{
+-                      fontFamily: "Poppins",
+-                      fontStyle: "normal",
+-                      fontWeight: 400,
+-                      fontSize: "4.59458px",
+-                      lineHeight: "7px",
+-                      color: " #1E1E1E",
+-                    }}
+-                    onMouseEnter={handleOpen}
+-                  >
+-                    Validity : {leftCardData.validity}
+-                  </Typography>
+-                  <Typography
+-                    sx={{
+-                      fontFamily: "Poppins",
+-                      fontStyle: "normal",
+-                      fontWeight: 400,
+-                      fontSize: "4.59458px",
+-                      lineHeight: "7px",
+-                      color: " #1E1E1E",
+-                    }}
+-                    onMouseEnter={handleOpen}
+-                  >
+-                    Redemption Type : {leftCardData.redemptionType}
+-                  </Typography>
++              </Box>
++              <Typography
++                sx={{
++                  fontFamily: "elix Titling",
++                  fontStyle: "normal",
++                  fontWeight: 400,
++                  fontSize: "13.7837px",
++                  lineHeight: "16px",
++                  color: "#8F0000",
++                  marginTop: "10px",
++                }}
++              // onMouseEnter={handleOpen}
++              >
++                {leftCardData.cardName}
++              </Typography>
++              <Box sx={{ marginTop: "7px" }}>
++                <Box sx={{ width: "9.05px", height: " 9.4px" }} className={classes.template1Icon}>
++                  {category}
+                 </Box>
+                 <Typography
+                   sx={{
+-                    fontFamily: "elix Titling",
++                    textAlign: "center",
++                    fontFamily: "Poppins",
+                     fontStyle: "normal",
+-                    fontWeight: 400,
+-                    fontSize: "13.7837px",
+-                    lineHeight: "16px",
+-                    color: "#8F0000",
+-                    marginTop: "10px",
++                    fontWeight: 700,
++                    fontSize: "5.74322px",
++                    lineHeight: "9px",
++                    color: "#1E1E1E",
+                   }}
+-                  onMouseEnter={handleOpen}
++                // onMouseEnter={handleOpen}
+                 >
+-                  {leftCardData.cardName}
++                  {productData?.productName}
+                 </Typography>
+-                <Box sx={{ marginTop: "7px" }}>
+-                  <Box>
+-                    <LocalDrinkIcon sx={{ width: "9.05px", height: " 9.4px" }} />
+-                    <LocalDrinkIcon sx={{ width: "9.05px", height: " 9.4px" }} />
+-                  </Box>
+-                  <Typography
+-                    sx={{
+-                      textAlign: "center",
+-                      fontFamily: "Poppins",
+-                      fontStyle: "normal",
+-                      fontWeight: 700,
+-                      fontSize: "5.74322px",
+-                      lineHeight: "9px",
+-                      color: "#1E1E1E",
+-                    }}
+-                    onMouseEnter={handleOpen}
+-                  >
+-                    {leftCardData.productName}
+-                  </Typography>
+-                  <Typography
+-                    sx={{
+-                      textAlign: "center",
+-                      fontFamily: "Poppins",
+-                      fontStyle: "normal",
+-                      fontWeight: 400,
+-                      fontSize: "5.74322px",
+-                      lineHeight: "126.7%",
+-                      color: "#434343",
+-                    }}
+-                    onMouseEnter={handleOpen}
+-                  >
+-                    {leftCardData.productDescription}
+-                  </Typography>
+-                </Box>
+                 <Typography
+                   sx={{
+                     textAlign: "center",
+-                    fontFamily: "Felix Titling",
++                    fontFamily: "Poppins",
+                     fontStyle: "normal",
+                     fontWeight: 400,
+-                    fontSize: " 4.59458px",
+-                    lineHeight: "5px",
+-                    color: "#1E1E1E",
+-                    marginTop: "7px",
++                    fontSize: "5.74322px",
++                    lineHeight: "126.7%",
++                    color: "#434343",
+                   }}
+-                  onMouseEnter={handleOpen}
++                // onMouseEnter={handleOpen}
+                 >
+-                  {leftCardData.adviceText}
++                  {productData?.productSubtittle}
+                 </Typography>
+               </Box>
+-            )}
+-            {leftCard && tempTwo && (
+-              <Grid container spacing={3} justifyContent="space-between">
+-                <Grid item>
+-                  <Grid container alignItems="center">
+-                    <Grid item xs={12}>
+-                      <img
+-                        src={BxiLogo}
+-                        alt="logo"
+-                        height={40}
+-                        sx={{
+-                          height: "19.415754318237305px",
+-                          width: "22.842092514038086px",
+-                          left: "62.1376953125px",
+-                          top: "1017.85546875px",
+-                          borderRadius: "0px",
+-                        }}
+-                      />
+-                    </Grid>
+-                    <Grid item xs={12}>
+-                      <Typography
+-                        sx={{
+-                          fontFamily: "Poppins",
+-                          fontSize: "5px",
+-                          fontWeight: 700,
+-                          lineHeight: "7px",
+-                          letterSpacing: "0em",
+-                          textAlign: "left",
+-                          color: "#888888",
+-                        }}
+-                      >
+-                        Barter Exchange Of India
+-                      </Typography>
+-                    </Grid>
++              <Typography
++                sx={{
++                  textAlign: "center",
++                  fontFamily: "Felix Titling",
++                  fontStyle: "normal",
++                  fontWeight: 400,
++                  fontSize: " 4.59458px",
++                  lineHeight: "5px",
++                  color: "#1E1E1E",
++                  marginTop: "7px",
++                }}
++              // onMouseEnter={handleOpen}
++              >
++                {leftCardData.adviceText}
++              </Typography>
++            </Box>
++          )}
++          {leftCard && templateId == 'Template2' && (
++            <Grid container spacing={3} justifyContent="space-between">
++              <Grid item>
++                <Grid container alignItems="center">
++                  <Grid item xs={12}>
++                    <img
++                      src={BxiLogo}
++                      alt="logo"
++                      height={40}
++                      sx={{
++                        height: "19.415754318237305px",
++                        width: "22.842092514038086px",
++                        left: "62.1376953125px",
++                        top: "1017.85546875px",
++                        borderRadius: "0px",
++                      }}
++                    />
++                  </Grid>
++                  <Grid item xs={12}>
++                    <Typography
++                      sx={{
++                        fontFamily: "Poppins",
++                        fontSize: "5px",
++                        fontWeight: 700,
++                        lineHeight: "7px",
++                        letterSpacing: "0em",
++                        textAlign: "left",
++                        color: "#888888",
++                      }}
++                    >
++                      Barter Exchange Of India
++                    </Typography>
+                   </Grid>
+-                </Grid>
+-                <Grid item>
+-                  <Typography
+-                    sx={{
+-                      fontFamily: "Forte",
+-                      fontSize: "7px",
+-                      fontStyle: "italic",
+-                      fontWeight: 400,
+-                      lineHeight: "9px",
+-                      letterSpacing: "0em",
+-                      textAlign: "right",
+-                      color: "#FFFFFF",
+-                      width: "66.1px",
+-                      height: "18.27px",
+-                    }}
+-                  >
+-                    Spend it on something you love!
+-                  </Typography>
+                 </Grid>
+               </Grid>
+-            )}
+-          </CardContent>
+-          {rightCard && (tempOne || tempTwo || tempThree) && (
+-            <Box sx={{ marginLeft: "2.5rem" }}>
+-              <Box>
++              <Grid item>
+                 <Typography
+                   sx={{
+-                    // fontFamily: "DM Sans",
+-                    fontStyle: "normal",
+-                    fontWeight: 500,
+-                    fontSize: "6.89186px",
++                    fontFamily: "Forte",
++                    fontSize: "7px",
++                    fontStyle: "italic",
++                    fontWeight: 400,
+                     lineHeight: "9px",
+-                    color: " #494949",
+-                    marginBottom: "5px",
++                    letterSpacing: "0em",
++                    textAlign: "right",
++                    color: "#FFFFFF",
++                    width: "66.1px",
++                    height: "18.27px",
+                   }}
+                 >
+-                  Inclusion
++                  Spend it on something you love!
+                 </Typography>
+-                <Typography
+-                  component="ul"
+-                  sx={{
+-                    marginLeft: "-2.2rem",
+-                    // fontFamily: "DM Sans",
+-                    fontStyle: "normal",
+-                    fontWeight: 400,
+-                    fontSize: "5.74322px",
+-                    lineHeight: "7px",
+-                    color: "#000000",
+-                    zIndex: 5,
+-                    position: "absolute",
+-                  }}
++              </Grid>
++            </Grid>
++          )}
++        </CardContent>
++        {rightCard && (
++          <Box sx={{ marginLeft: "2.5rem" }}>
++            <Box>
++              <Typography
++                sx={{
++                  // fontFamily: "DM Sans",
++                  fontStyle: "normal",
++                  fontWeight: 500,
++                  fontSize: "6.89186px",
++                  lineHeight: "9px",
++                  color: " #494949",
++                  marginBottom: "5px",
++                }}
++              >
++                Inclusion
++              </Typography>
++              <Typography
++                component="span"
++                sx={{
++                  // fontFamily: "DM Sans",
++                  fontStyle: "normal",
++                  fontWeight: 400,
++                  fontSize: "5.74322px",
++                  lineHeight: "7px",
++                  color: "#000000",
++                  zIndex: 5,
++                  position: "absolute",
++                }}
++              >
++                {productData?.inclusions}
++                {/* <li
++                //  onMouseEnter={handleOpen}
+                 >
+-                  <li onMouseEnter={handleOpen}>
+-                    {rightCardData.inclusionPoint1}
+-                  </li>
+-                  <li onMouseEnter={handleOpen}>
+-                    {rightCardData.inclusionPoint2}
+-                  </li>
+-                  <li onMouseEnter={handleOpen}>
+-                    {rightCardData.inclusionPoint3}
+-                  </li>
+-                  <li onMouseEnter={handleOpen}>
+-                    {rightCardData.inclusionPoint4}
+-                  </li>
+-                </Typography>
+-              </Box>
+-              <Box sx={{ marginTop: "2.5rem" }}>
+-                <Typography
+-                  sx={{
+-                    // fontFamily: "DM Sans",
+-                    fontStyle: "normal",
+-                    fontWeight: 500,
+-                    fontSize: "6.89186px",
+-                    lineHeight: "9px",
+-                    color: " #494949",
+-                    marginTop: "40px",
+-                    marginBottom: "5px",
+-                  }}
++                  {rightCardData.inclusionPoint1}
++                </li>
++                <li
++                // onMouseEnter={handleOpen}
+                 >
+-                  Exclusion
+-                </Typography>
+-                <Typography
+-                  component="ul"
+-                  sx={{
+-                    marginLeft: "-2rem",
+-                    // fontFamily: "DM Sans",
+-                    fontStyle: "normal",
+-                    fontWeight: 400,
+-                    fontSize: "5.74322px",
+-                    lineHeight: "7px",
+-                    color: "#000000",
+-                    zIndex: 5,
+-                    position: "absolute",
+-                  }}
++                  {rightCardData.inclusionPoint2}
++                </li>
++                <li
++                // onMouseEnter={handleOpen}
+                 >
+-                  <li onMouseEnter={handleOpen}>
+-                    {rightCardData.exclusionPoint1}
+-                  </li>
+-                  <li onMouseEnter={handleOpen}>
+-                    {rightCardData.exclusionPoint2}
+-                  </li>
+-                  <li onMouseEnter={handleOpen}>
+-                    {rightCardData.exclusionPoint3}
+-                  </li>
+-                </Typography>
+-              </Box>
+-              <Box sx={{ marginTop: "5rem" }}>
+-                <Typography
+-                  sx={{
+-                    fontFamily: "Prata",
+-                    fontStyle: "normal",
+-                    fontWeight: 400,
+-                    fontSize: "8.04051px",
+-                    lineHeight: "11px",
+-                    color: " #000000",
+-                  }}
++                  {rightCardData.inclusionPoint3}
++                </li>
++                <li
++                // onMouseEnter={handleOpen}
+                 >
+-                  www.bxiworld.com
+-                </Typography>
+-              </Box>
++                  {rightCardData.inclusionPoint4}
++                </li> */}
++              </Typography>
+             </Box>
+-          )}
+-          {leftCard && tempTwo && (
+-            <Box
+-              sx={{
+-                position: "absolute",
+-                bottom: 0,
+-                left: 0,
+-                right: 0,
+-                height: "50px",
+-                backgroundColor: "#000",
+-                borderRadius: "58% 220% 0 0",
+-                zIndex: 1,
+-              }}
+-              className="black-box"
+-            >
+-              {/* bottom text  */}
+-              <Grid
+-                container
+-                spacing={3}
+-                justifyContent="space-between"
+-                sx={{ padding: "1rem 1rem" }}
++            <Box sx={{ marginTop: "2.5rem" }}>
++              <Typography
++                sx={{
++                  // fontFamily: "DM Sans",
++                  fontStyle: "normal",
++                  fontWeight: 500,
++                  fontSize: "6.89186px",
++                  lineHeight: "9px",
++                  color: " #494949",
++                  marginTop: "40px",
++                  marginBottom: "5px",
++                }}
++              >
++                Exclusion
++              </Typography>
++              <Typography
++                component="span"
++                sx={{
++                  
++                  // fontFamily: "DM Sans",
++                  fontStyle: "normal",
++                  fontWeight: 400,
++                  fontSize: "5.74322px",
++                  lineHeight: "7px",
++                  color: "#000000",
++                  zIndex: 5,
++                  position: "absolute",
++                }}
++              >
++                {productData?.exclusions}
++                {/* <li
++                // onMouseEnter={handleOpen}
++                >
++                  {rightCardData.exclusionPoint1}
++                </li>
++                <li
++                // onMouseEnter={handleOpen}
++                >
++                  {rightCardData.exclusionPoint2}
++                </li>
++                <li
++                // onMouseEnter={handleOpen}
++                >
++                  {rightCardData.exclusionPoint3}
++                </li> */}
++              </Typography>
++            </Box>
++            <Box sx={{ marginTop: "5rem" }}>
++              <Typography
++                sx={{
++                  fontFamily: "Prata",
++                  fontStyle: "normal",
++                  fontWeight: 400,
++                  fontSize: "8.04051px",
++                  lineHeight: "11px",
++                  color: " #000000",
++                }}
+               >
+-                <Grid item>
+-                  <Grid container alignItems="center">
+-                    <Grid item xs={12}>
+-                      <Typography
+-                        sx={{
+-                          fontFamily: "Poppins",
+-                          fontSize: "14px",
+-                          fontWeight: 700,
+-                          lineHeight: "21px",
+-                          letterSpacing: "0em",
+-                          textAlign: "left",
+-                          color: "#FFFFFF",
+-                        }}
+-                      >
+-                        Value $1,00,000
+-                      </Typography>
+-                    </Grid>
+-                    <Grid item xs={12}>
+-                      <Box sx={{ display: "flex" }}>
+-                        <Box sx={{ color: "white", justifyContent: "center" }}>
+-                          <DinnerDiningIcon />
+-                        </Box>
+-                        <Box sx={{ textAlign: "left", marginLeft: ".7rem" }}>
+-                          <Typography
+-                            sx={{
+-                              fontStyle: "normal",
+-                              fontFamily: "Poppins",
+-                              fontSize: "4.56842px",
+-                              fontWeight: 400,
+-                              lineHeight: "7px",
+-                              color: "#FFFFFF",
+-                            }}
+-                          >
+-                            Validity : 4 Months
+-                          </Typography>
+-                          <Typography
+-                            sx={{
+-                              fontFamily: "Poppins",
+-                              fontSize: "4.56842px",
+-                              fontWeight: 400,
+-                              lineHeight: "7px",
+-                              color: "#FFFFFF",
+-                              fontStyle: "normal",
+-                            }}
+-                          >
+-                            Redemption Type : Online
+-                          </Typography>
+-                        </Box>
++                www.bxiworld.com
++              </Typography>
++            </Box>
++          </Box>
++        )}
++        {leftCard && tempTwo && (
++          <Box
++            sx={{
++              position: "absolute",
++              bottom: 0,
++              left: 0,
++              right: 0,
++              height: "50px",
++              backgroundColor: "#000",
++              borderRadius: "58% 220% 0 0",
++              zIndex: 1,
++            }}
++            className="black-box"
++          >
++            {/* bottom text  */}
++            <Grid
++              container
++              spacing={3}
++              justifyContent="space-between"
++              sx={{ padding: "1rem 1rem" }}
++            >
++              <Grid item>
++                <Grid container alignItems="center">
++                  <Grid item xs={12}>
++                    <Typography
++                      sx={{
++                        fontFamily: "Poppins",
++                        fontSize: "14px",
++                        fontWeight: 700,
++                        lineHeight: "21px",
++                        letterSpacing: "0em",
++                        textAlign: "left",
++                        color: "#FFFFFF",
++                      }}
++                    >
++                      Value ${productData?.pricePerUnit}
++                    </Typography>
++                  </Grid>
++                  <Grid item xs={12}>
++                    <Box sx={{ display: "flex" }}>
++                      <Box sx={{ color: "white", justifyContent: "center", width: "9.05px", height: " 9.4px" }} className={classes.template2Icon}>
++                  {category}
++                
++                      </Box>
++                      <Box sx={{ textAlign: "left", marginLeft: ".7rem" }}>
++                        <Typography
++                          sx={{
++                            fontStyle: "normal",
++                            fontFamily: "Poppins",
++                            fontSize: "4.56842px",
++                            fontWeight: 400,
++                            lineHeight: "7px",
++                            color: "#FFFFFF",
++                          }}
++                        >
++                          Validity : {productData?.validityOfVoucherValue} {productData?.validityOfVoucherUnit}
++                        </Typography>
++                        <Typography
++                          sx={{
++                            fontFamily: "Poppins",
++                            fontSize: "4.56842px",
++                            fontWeight: 400,
++                            lineHeight: "7px",
++                            color: "#FFFFFF",
++                            fontStyle: "normal",
++                          }}
++                        >
++                          Redemption Type : {productData?.redemptionType}
++                        </Typography>
+                       </Box>
+-                    </Grid>
++                    </Box>
+                   </Grid>
+                 </Grid>
+-                <Grid item>
+-                  <Typography
+-                    sx={{
+-                      textTransform: "capitalize",
+-                      fontFamily: "Forte",
+-                      fontSize: "11.421px",
+-                      fontStyle: "italic",
+-                      fontWeight: 400,
+-                      lineHeight: "115.79%",
+-                      letterSpacing: "0em",
+-                      textAlign: "right",
+-                      color: "#F4F4F4",
+-                      width: "35.41px",
+-                      height: "27.41px",
+-                    }}
+-                  >
+-                    Gift Card
+-                  </Typography>
+-                </Grid>
+               </Grid>
+-            </Box>
+-          )}
+-          {rightCard && tempTwo && (
+-            <Box
+-              sx={{
+-                position: "absolute",
+-                bottom: 0,
+-                left: 0,
+-                right: 0,
+-                height: "50px",
+-                backgroundColor: "#000",
+-                borderRadius: "220% 58% 0 0",
+-              }}
+-              className="black-box"
+-            />
+-          )}
+-          {leftCard && tempTwo && (
+-            <Box
+-              sx={{
+-                position: "absolute",
+-                bottom: 0,
+-                left: 0,
+-                right: 0,
+-                height: "50px",
+-                // backgroundColor: "#000",
+-                borderRadius: "220% 58% 0 0",
+-                backdropFilter: "blur(30px)",
+-                // opacity: 0.3,
+-              }}
+-              className="black-box"
+-            />
+-          )}
+-        </Card>
+-      </>
+-    );
+-  };
+-  
+-  export default CardOne;
+\ No newline at end of file
++              <Grid item>
++                <Typography
++                  sx={{
++                    textTransform: "capitalize",
++                    fontFamily: "Forte",
++                    fontSize: "11.421px",
++                    fontStyle: "italic",
++                    fontWeight: 400,
++                    lineHeight: "115.79%",
++                    letterSpacing: "0em",
++                    textAlign: "right",
++                    color: "#F4F4F4",
++                    width: "35.41px",
++                    height: "27.41px",
++                  }}
++                >
++                  Gift Card
++                </Typography>
++              </Grid>
++            </Grid>
++          </Box>
++        )}
++        {rightCard && tempTwo && (
++          <Box
++            sx={{
++              position: "absolute",
++              bottom: 0,
++              left: 0,
++              right: 0,
++              height: "50px",
++              backgroundColor: "#000",
++              borderRadius: "220% 58% 0 0",
++            }}
++            className="black-box"
++          />
++        )}
++        {leftCard && tempTwo && (
++          <Box
++            sx={{
++              position: "absolute",
++              bottom: 0,
++              left: 0,
++              right: 0,
++              height: "50px",
++              // backgroundColor: "#000",
++              borderRadius: "220% 58% 0 0",
++              backdropFilter: "blur(30px)",
++              // opacity: 0.3,
++            }}
++            className="black-box"
++          />
++        )}
++      </Card>
++    </>
++  );
++};
++
++export default CardOne;
++
+diff --git a/src/pages/AddProductAllPages/Hotels/ProductInfo/HotelsGoLive.jsx b/src/pages/AddProductAllPages/Hotels/ProductInfo/HotelsGoLive.jsx
+index 8288ed09..bf0811ee 100644
+--- a/src/pages/AddProductAllPages/Hotels/ProductInfo/HotelsGoLive.jsx
++++ b/src/pages/AddProductAllPages/Hotels/ProductInfo/HotelsGoLive.jsx
+@@ -108,7 +108,7 @@ export default function HotelsGoLive() {
+     })
+       .then((res) => {
+         console.log(res);
+-        navigate("/home/hotelvoucherdetail/" + id);
++        navigate("/home/hotels/voucherdesign/" + id);
+       })
+       .catch((err) => console.log(err));
+   };
+diff --git a/src/pages/AddProductAllPages/Template.jsx b/src/pages/AddProductAllPages/Template.jsx
+deleted file mode 100644
+index b4ea1744..00000000
+--- a/src/pages/AddProductAllPages/Template.jsx
++++ /dev/null
+@@ -1,98 +0,0 @@
+-import {
+-    FormControlLabel,
+-    Grid,
+-    Radio,
+-    RadioGroup,
+-    Typography,
+-  } from "@mui/material";
+-  import CardOne from "./CardOne";
+-  import { useState } from "react";
+-  
+-  const Template = ({
+-    tempOne = false,
+-    tempTwo = false,
+-    tempThree = false,
+-    tempFour = false,
+-    tempFive = false,
+-    cardBgColor,cardImage,myRefBack,myRefFront
+-  }) => {
+-    const [value, setValue] = useState("");
+-    const [error, setError] = useState(false);
+-    const [helperText, setHelperText] = useState("Choose wisely");
+-    console.log(value,'--------------');
+-    const handleRadioChange = (event) => {
+-      setValue(event.target.value);
+-      setHelperText(" ");
+-      setError(false);
+-    };
+-    return (
+-      <>
+-        <RadioGroup
+-          aria-labelledby="demo-error-radios"
+-          name="Template"
+-          value={value}
+-          onChange={handleRadioChange}
+-        >
+-          <FormControlLabel
+-            value={tempOne
+-              ? "Template1"
+-              : tempTwo
+-              ? "Template2"
+-              : tempThree
+-              ? "Template3"
+-              : tempFour
+-              ? "Template4"
+-              : tempFive
+-              ? "Template5"
+-              : ""}
+-            control={<Radio sx={{ color: "#2d8ae0" }} />}
+-            label={
+-              <Typography sx={{ fontSize: "1.5rem", color: "#315794" }}>
+-                {tempOne
+-                  ? "Template 1"
+-                  : tempTwo
+-                  ? "Template 2"
+-                  : tempThree
+-                  ? "Template 3"
+-                  : tempFour
+-                  ? "Template 4"
+-                  : tempFive
+-                  ? "Template 5"
+-                  : ""}
+-              </Typography>
+-            }
+-            sx={{ color: "#2d8ae0" }}
+-          />
+-        </RadioGroup>
+-        <Grid container spacing={6}>
+-          <Grid item xs={12} sm={6} md={6}>
+-            <CardOne
+-              leftCard
+-              tempOne={tempOne}
+-              tempTwo={tempTwo}
+-              tempThree={tempThree}
+-              cardBgColor={cardBgColor}
+-              cardImage={cardImage}
+-              myRefBack={myRefBack}
+-              myRefFront={myRefFront}
+-            />
+-          </Grid>
+-          <Grid item xs={12} sm={6} md={6}>
+-            <CardOne
+-              rightCard
+-              tempOne={tempOne}
+-              tempTwo={tempTwo}
+-              tempThree={tempThree}
+-              cardBgColor={cardBgColor}
+-              cardImage={cardImage}
+-              myRefBack={myRefBack}
+-              myRefFront={myRefFront}
+-            />
+-          </Grid>
+-        </Grid>
+-      </>
+-    );
+-  };
+-  
+-  export default Template;
+-  
+\ No newline at end of file
+diff --git a/src/pages/AddProductAllPages/Voucher.jsx b/src/pages/AddProductAllPages/Voucher.jsx
+deleted file mode 100644
+index 2590b152..00000000
+--- a/src/pages/AddProductAllPages/Voucher.jsx
++++ /dev/null
+@@ -1,594 +0,0 @@
+-import {
+-    Box,
+-    Card,
+-    Grid,
+-    Typography,
+-    RadioGroup,
+-    FormControlLabel,
+-    Radio,
+-    InputBase,
+-    IconButton,
+-    Button,
+-  } from "@mui/material";
+-  import { Delete } from "@material-ui/icons";
+-  import { useState } from "react";
+-  import { useDropzone } from "react-dropzone";
+-  import UploadtoCloud from "../../assets/UploadtoCloud.svg";
+-  import RadioIcon from "@mui/icons-material/Radio";
+-  import FlatwareIcon from "@mui/icons-material/Flatware";
+-  import ApartmentIcon from "@mui/icons-material/Apartment";
+-  import IcecreamIcon from "@mui/icons-material/Icecream";
+-  import LunchDiningIcon from "@mui/icons-material/LunchDining";
+-  import LiquorIcon from "@mui/icons-material/Liquor";
+-  import LocalCafeIcon from "@mui/icons-material/LocalCafe";
+-  import FastfoodIcon from "@mui/icons-material/Fastfood";
+-  import AirplaneTicketIcon from "@mui/icons-material/AirplaneTicket";
+-  import IronIcon from "@mui/icons-material/Iron";
+-  import LocalPizzaIcon from "@mui/icons-material/LocalPizza";
+-  import BxiLogo from "../../assets/BXI_LOGO.png";
+-  import LocalDrinkIcon from "@mui/icons-material/LocalDrink";
+-  import React, { useRef } from "react";
+-  import * as htmlToImage from "html-to-image";
+-  
+-  import { EditorState, convertToRaw } from "draft-js";
+-  import { Editor } from "react-draft-wysiwyg";
+-  import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+-  // import draftToHtml from "draftjs-to-html";
+-  import {
+-    Dialog,
+-    DialogTitle,
+-    DialogContent,
+-    DialogActions,
+-  } from "@material-ui/core";
+-  import Template from "./Template";
+-  
+-  const VoucherCard = () => {
+-    const myRefFront = useRef(null);
+-    const myRefBack = useRef(null);
+-    const [dataUrlFront, setDataUrlFront] = useState("");
+-    const [dataUrlBack, setDataUrlBack] = useState("");
+-    const [files, setFiles] = useState([]);
+-    const [cardBgColor, setCardBgColor] = useState("");
+-    const [activeColor, setActiveColor] = useState("");
+-    const [activeAction, setActiveAction] = useState("");
+-    const [category, setCategory] = useState("");
+-    const [value, setValue] = useState("");
+-    const [error, setError] = useState(false);
+-    const [helperText, setHelperText] = useState("Choose wisely");
+-    const [open, setOpen] = useState(false);
+-    const [hoveredText, setHoveredText] = useState("");
+-    // Left Card
+-    const [leftCardData, setLeftCardData] = useState({
+-      offerValue: "$1,00,000",
+-      validity: "4 months",
+-      redemptionType: "online",
+-      cardName: "Gift Card",
+-      productName: "Product name",
+-      productDescription: "Lorem ipsum dolor sit amet consectetur.",
+-      adviceText: "Spend it on something you love!",
+-    });
+-  
+-    // Right Card
+-    const [rightCardData, setRightCardData] = useState({
+-      inclusionPoint1: "Lorem ipsum dolor sit amet consectetur.",
+-      inclusionPoint2: "Nibh elit nibh neque gravida sed lorem nisi lorem ipsum.",
+-      inclusionPoint3:
+-        "Auctor neque eu vulputate gravida ultrices ipsum lectus massa aliquet.",
+-      inclusionPoint4: "hello Lorem ipsum dolor sit amet consectetur.",
+-      exclusionPoint1: "Lorem one ipsum dolor sit amet consectetur.",
+-      exclusionPoint2:
+-        "Nibh elit two nibh neque gravida sed lorem nisi lorem ipsum.",
+-      exclusionPoint3:
+-        "Auctor neque three eu vulputate gravida ultrices ipsum lectus massa aliquet.",
+-      webUrl: "www.bxiworld.com",
+-    });
+-  
+-    const [editorState, setEditorState] = useState(() =>
+-      EditorState.createEmpty()
+-    );
+-    const handleOpen = (event) => {
+-      const text = event.target.innerText;
+-      setHoveredText(text);
+-      setOpen(true);
+-    };
+-  
+-    const handleClose = () => {
+-      setOpen(false);
+-    };
+-  
+-    const handleSubmit = () => {
+-      // const editedText = draftToHtml(
+-      //   convertToRaw(editorState.getCurrentContent())
+-      // );
+-      const contentState = editorState.getCurrentContent();
+-      const editedText = convertToRaw(contentState);
+-  
+-      // setting Left card data
+-      setLeftCardData((prevState) => {
+-        return {
+-          ...prevState,
+-          offerValue:
+-            hoveredText === `Value ${prevState.offerValue}`
+-              ? editedText.blocks[0].text
+-              : prevState.offerValue,
+-          validity:
+-            hoveredText === `Validity : ${prevState.validity}`
+-              ? editedText.blocks[0].text
+-              : prevState.validity,
+-          redemptionType:
+-            hoveredText === `Redemption Type : ${prevState.redemptionType}`
+-              ? editedText.blocks[0].text
+-              : prevState.redemptionType,
+-          cardName:
+-            hoveredText === prevState.cardName
+-              ? editedText.blocks[0].text
+-              : prevState.cardName,
+-          productName:
+-            hoveredText === prevState.productName
+-              ? editedText.blocks[0].text
+-              : prevState.productName,
+-          productDescription:
+-            hoveredText === prevState.productDescription
+-              ? editedText.blocks[0].text
+-              : prevState.productDescription,
+-          adviceText:
+-            hoveredText === prevState.adviceText
+-              ? editedText.blocks[0].text
+-              : prevState.adviceText,
+-        };
+-      });
+-      // setting Right card data
+-      setRightCardData((prevState) => {
+-        return {
+-          ...prevState,
+-          inclusionPoint1:
+-            hoveredText === prevState.inclusionPoint1
+-              ? editedText.blocks[0].text
+-              : prevState.inclusionPoint1,
+-          inclusionPoint2:
+-            hoveredText === prevState.inclusionPoint2
+-              ? editedText.blocks[0].text
+-              : prevState.inclusionPoint2,
+-          inclusionPoint3:
+-            hoveredText === prevState.inclusionPoint3
+-              ? editedText.blocks[0].text
+-              : prevState.inclusionPoint3,
+-          inclusionPoint4:
+-            hoveredText === prevState.inclusionPoint4
+-              ? editedText.blocks[0].text
+-              : prevState.inclusionPoint4,
+-          exclusionPoint1:
+-            hoveredText === prevState.exclusionPoint1
+-              ? editedText.blocks[0].text
+-              : prevState.exclusionPoint1,
+-          exclusionPoint2:
+-            hoveredText === prevState.exclusionPoint2
+-              ? editedText.blocks[0].text
+-              : prevState.exclusionPoint2,
+-          exclusionPoint3:
+-            hoveredText === prevState.exclusionPoint3
+-              ? editedText.blocks[0].text
+-              : prevState.exclusionPoint3,
+-          webUrl:
+-            hoveredText === prevState.webUrl
+-              ? editedText.blocks[0].text
+-              : prevState.webUrl,
+-        };
+-      });
+-  
+-      setOpen(false);
+-    };
+-    // dropzone
+-    const { getRootProps, getInputProps } = useDropzone({
+-      accept: ".jpg, .png, .xlsx",
+-      multiple: false,
+-      onDrop: (acceptedFiles) => {
+-        setFiles(
+-          acceptedFiles.map((file) =>
+-            Object.assign(file, {
+-              preview: URL.createObjectURL(file),
+-            })
+-          )
+-        );
+-      },
+-    });
+-    const handleRadioChange = (event) => {
+-      setValue(event.target.value);
+-      setHelperText(" ");
+-      setError(false);
+-    };
+-  
+-    const colors = [
+-      //LIGHT
+-      "#FF00001a",
+-      "#FFA5001a",
+-      "#FFFF001a",
+-      "#00FF001a",
+-      "#00FFFF1a",
+-      "#0000FF1a",
+-      "#FF00FF1a",
+-      "#8000801a",
+-      // "#0000001a",
+-      "#FFFFFF", // white
+-  
+-      // MIDDLE
+-      "#FF000080",
+-      "#FFA50080",
+-      "#FFFF0080",
+-      "#00FF0080",
+-      "#00FFFF80",
+-      "#0000FF80",
+-      "#FF00FF80",
+-      "#80008080",
+-      "#00000080",
+-  
+-      // DARK
+-      "#FF0000", // red
+-      "#FFA500", // orange
+-      "#FFFF00", // yellow
+-      "#00FF00", // green
+-      "#00FFFF", // cyan
+-      "#0000FF", // blue
+-      "#FF00FF", // magenta
+-      "#800080", // purple
+-      "#000000", // black
+-    ];
+-  
+-    const iconList = [
+-      {
+-        icon: <RadioIcon sx={{ fontSize: "2.5rem" }} />,
+-        action: "RadioIcon1",
+-      },
+-      {
+-        icon: <IcecreamIcon sx={{ fontSize: "2.5rem" }} />,
+-        action: "IcecreamIcon1",
+-      },
+-      {
+-        icon: <ApartmentIcon sx={{ fontSize: "2.5rem" }} />,
+-        action: "ApartmentIcon2",
+-      },
+-      {
+-        icon: <FlatwareIcon sx={{ fontSize: "2.5rem" }} />,
+-        action: "FlatwareIcon1",
+-      },
+-      {
+-        icon: <AirplaneTicketIcon sx={{ fontSize: "2.5rem" }} />,
+-        action: "AirplaneTicketIcon3",
+-      },
+-      {
+-        icon: <FastfoodIcon sx={{ fontSize: "2.5rem" }} />,
+-        action: "FastfoodIcon1",
+-      },
+-      {
+-        icon: <LocalCafeIcon sx={{ fontSize: "2.5rem" }} />,
+-        action: "LocalCafeIcon2",
+-      },
+-      {
+-        icon: <LiquorIcon sx={{ fontSize: "2.5rem" }} />,
+-        action: "LiquorIcon3",
+-      },
+-      {
+-        icon: <LunchDiningIcon sx={{ fontSize: "2.5rem" }} />,
+-        action: "LunchDiningIcon1",
+-      },
+-      {
+-        icon: <LocalPizzaIcon sx={{ fontSize: "2.5rem" }} />,
+-        action: "LocalPizzaIcon1",
+-      },
+-      {
+-        icon: <IronIcon sx={{ fontSize: "2.5rem" }} />,
+-        action: "IronIcon2",
+-      },
+-      {
+-        icon: <RadioIcon sx={{ fontSize: "2.5rem" }} />,
+-        action: "RadioIcon2",
+-      },
+-      {
+-        icon: <IcecreamIcon sx={{ fontSize: "2.5rem" }} />,
+-        action: "IcecreamIcon2",
+-      },
+-      {
+-        icon: <ApartmentIcon sx={{ fontSize: "2.5rem" }} />,
+-        action: "ApartmentIcon1",
+-      },
+-      {
+-        icon: <FlatwareIcon sx={{ fontSize: "2.5rem" }} />,
+-        action: "FlatwareIcon2",
+-      },
+-      {
+-        icon: <AirplaneTicketIcon sx={{ fontSize: "2.5rem" }} />,
+-        action: "AirplaneTicketIcon1",
+-      },
+-      {
+-        icon: <FastfoodIcon sx={{ fontSize: "2.5rem" }} />,
+-        action: "FastfoodIcon2",
+-      },
+-      {
+-        icon: <LocalCafeIcon sx={{ fontSize: "2.5rem" }} />,
+-        action: "LocalCafeIcon3",
+-      },
+-      {
+-        icon: <LiquorIcon sx={{ fontSize: "2.5rem" }} />,
+-        action: "LiquorIcon1",
+-      },
+-      {
+-        icon: <LunchDiningIcon sx={{ fontSize: "2.5rem" }} />,
+-        action: "LunchDiningIcon2",
+-      },
+-      {
+-        icon: <LocalPizzaIcon sx={{ fontSize: "2.5rem" }} />,
+-        action: "LocalPizzaIcon2",
+-      },
+-      {
+-        icon: <IronIcon sx={{ fontSize: "2.5rem" }} />,
+-        action: "IronIcon1",
+-      },
+-      {
+-        icon: <AirplaneTicketIcon sx={{ fontSize: "2.5rem" }} />,
+-        action: "AirplaneTicketIcon2",
+-      },
+-      {
+-        icon: <FastfoodIcon sx={{ fontSize: "2.5rem" }} />,
+-        action: "FastfoodIcon3",
+-      },
+-      // {
+-      //   icon: <LocalCafeIcon sx={{ fontSize: "2.5rem" }} />,
+-      //   action: "LocalCafeIcon1",
+-      // },
+-      // {
+-      //   icon: <LiquorIcon sx={{ fontSize: "2.5rem" }} />,
+-      //   action: "LiquorIcon2",
+-      // },
+-    ];
+-    function chunk(array, size) {
+-      const chunks = [];
+-      for (let i = 0; i < array.length; i += size) {
+-        chunks.push(array.slice(i, i + size));
+-      }
+-      return chunks;
+-    }
+-  
+-    const downloadCardFront = () => {
+-      htmlToImage
+-        .toPng(myRefFront.current)
+-        .then((dataUrl) => {
+-          setDataUrlFront(dataUrl);
+-          const link = document.createElement("a");
+-          link.download = "my-design-front.png";
+-          link.href = dataUrl;
+-          link.click();
+-        })
+-        .catch((error) => {
+-          console.error("Error capturing image: ", error);
+-        });
+-    };
+-    const downloadCardBack = () => {
+-      htmlToImage
+-        .toPng(myRefBack.current)
+-        .then((dataUrl) => {
+-          setDataUrlBack(dataUrl);
+-          const link = document.createElement("a");
+-          link.download = "my-design-back.png";
+-          link.href = dataUrl;
+-          link.click();
+-        })
+-        .catch((error) => {
+-          console.error("Error capturing image: ", error);
+-        });
+-    };
+-    return (
+-      <>
+-        <Box sx={{ padding: 8 }}>
+-          {/* template 1  */}
+-          <Box>
+-            <Template
+-              tempOne
+-              cardBgColor={cardBgColor}
+-              cardImage={files[0]?.preview}
+-              myRefBack={myRefBack}
+-              myRefFront={myRefFront}
+-            />
+-          </Box>
+-          <Box sx={{ marginTop: "2rem", color: "#315794" }}>
+-            {/* Added two buttons for image dowld  */}
+-            <Button
+-              style={{
+-                backgroundColor: "#2d8ae0",
+-                color: "white",
+-                marginRight: "1rem",
+-              }}
+-              onClick={downloadCardFront}
+-            >
+-              Download Card Front
+-            </Button>
+-            <Button
+-              style={{ backgroundColor: "#2d8ae0", color: "white" }}
+-              onClick={downloadCardBack}
+-            >
+-              Download Card Back
+-            </Button>
+-            <Typography fontSize="20px">Upload Image</Typography>
+-          </Box>
+-          <Box
+-            {...getRootProps({ className: "dropzone" })}
+-            // sx={{
+-            //   ...(image === false && {
+-            //     display: "none",
+-            //   }),
+-            //   ...(image === true && {
+-            //     display: "flex",
+-            //   }),
+-            // }}
+-          >
+-            <input {...getInputProps()} />
+-            <Box
+-              border={"2px dashed "}
+-              sx={{
+-                padding: "3rem",
+-                marginTop: "1rem",
+-                textAlign: "center",
+-                "&:hover": { cursor: "pointer" },
+-                borderColor: "#2d8ae0",
+-              }}
+-            >
+-              <Box
+-                component="img"
+-                src={UploadtoCloud}
+-                sx={{
+-                  position: "absolute",
+-                  left: "30%",
+-                }}
+-              />
+-              <Typography
+-                sx={{
+-                  fontFamily: "Poppins",
+-                  fontStyle: "normal",
+-                  fontWeight: 400,
+-                  fontSize: "10px",
+-                  color: "#6B7A99",
+-                  cursor: "pointer",
+-                  "&:hover": {
+-                    color: "blue",
+-                  },
+-                }}
+-              >
+-                Drag & Drop upload or browse to choose a file
+-              </Typography>
+-              <Typography
+-                sx={{
+-                  fontFamily: "Mulish",
+-                  fontStyle: "normal",
+-                  fontWeight: 400,
+-                  fontSize: "8px",
+-                  color: "#676767",
+-                  textAlign: "center",
+-                }}
+-              >
+-                Supported format : JPEG, PNG, XLSX
+-              </Typography>
+-            </Box>
+-          </Box>
+-          <Box
+-            sx={{ marginTop: "2rem", marginBottom: "1.5rem", color: "#315794" }}
+-          >
+-            <Typography fontSize="18px">Uploaded file</Typography>
+-          </Box>
+-          <Box sx={{ marginBottom: "2rem" }}>
+-            <InputBase
+-              placeholder={files[0]?.path}
+-              // value={search}
+-              // onChange={(e) => setSearch(e.target.value)}
+-              type="text"
+-              sx={{
+-                border: "1px solid #2d8ae0",
+-                borderRadius: "4px",
+-                padding: "0.5rem",
+-                width: "70%",
+-              }}
+-              inputProps={{
+-                style: {
+-                  color: "#2d8ae0",
+-                },
+-              }}
+-              endAdornment={
+-                <IconButton
+-                  aria-label="clear input"
+-                  onClick={() => {
+-                    setFiles([]);
+-                  }}
+-                  style={{ color: "#2d8ae0" }}
+-                >
+-                  <Delete />
+-                </IconButton>
+-              }
+-            />
+-          </Box>
+-          <Box
+-            sx={{ marginTop: "2rem", marginBottom: "1.5rem", color: "#315794" }}
+-          >
+-            <Typography fontSize="18px">Choose Background color</Typography>
+-          </Box>
+-          <Box>
+-            <Box sx={{ display: "flex", flexWrap: "wrap" }}>
+-              {chunk(colors, 9).map((rowColors, index) => (
+-                <Box key={index} sx={{ display: "flex" }}>
+-                  {rowColors.map((color) => (
+-                    <Box
+-                      onClick={() => {
+-                        setActiveColor(color);
+-                        setCardBgColor(color);
+-                      }}
+-                      className={activeColor === color ? "active" : ""}
+-                      key={color}
+-                      sx={{
+-                        width: "4rem",
+-                        height: "4rem",
+-                        backgroundColor: color,
+-                        borderRadius: "2px",
+-                        margin: "0.5rem",
+-                        cursor: "pointer",
+-                        "&:hover": {
+-                          border: "1px solid blue",
+-                        },
+-                        "&.active": {
+-                          border: "1.5px solid blue",
+-                        },
+-                      }}
+-                    />
+-                  ))}
+-                </Box>
+-              ))}
+-            </Box>
+-          </Box>
+-          <Box
+-            sx={{ marginTop: "2rem", marginBottom: "1.5rem", color: "#315794" }}
+-          >
+-            <Typography fontSize="20px">Choose Element</Typography>
+-          </Box>
+-          <Typography fontSize="15px">{category}</Typography>
+-  
+-          <Box sx={{ display: "flex", flexWrap: "wrap" }}>
+-            {iconList.map(({ icon, action }) => (
+-              <Box
+-                key={action}
+-                onClick={() => {
+-                  setActiveAction(action);
+-                  setCategory(action);
+-                }}
+-                className={activeAction === action ? "active" : ""}
+-                sx={{
+-                  width: "37px",
+-                  height: "37px",
+-                  border: "1px solid black",
+-                  borderRadius: "2px",
+-                  display: "flex",
+-                  justifyContent: "center",
+-                  alignItems: "center",
+-                  margin: "0.5rem",
+-                  cursor: "pointer",
+-                  "&:hover": {
+-                    border: "1px solid blue",
+-                  },
+-                  "&.active": {
+-                    border: "1.5px solid blue",
+-                  },
+-                }}
+-              >
+-                {icon}
+-              </Box>
+-            ))}
+-          </Box>
+-          {/* template 2 */}
+-          <Box sx={{ marginTop: "3rem" }}>
+-            <Template tempOne={false} tempTwo />
+-          </Box>
+-          {/* template 3  */}
+-          <Box sx={{ marginTop: "3rem" }}>
+-            <Template tempTwo={false} tempThree />
+-          </Box>
+-        </Box>
+-      </>
+-    );
+-  };
+-  
+-  export default VoucherCard;
+\ No newline at end of file
+diff --git a/src/pages/Router.jsx b/src/pages/Router.jsx
+index 8aa0f6c5..83894ff2 100644
+--- a/src/pages/Router.jsx
++++ b/src/pages/Router.jsx
+@@ -141,16 +141,17 @@ import Bulkuploadpage from "./AddProductAllPages/Textile/BulkUpload/Bulkuploadpa
+ import BulkUploadAllProductsshow from "./AddProductAllPages/Textile/BulkUpload/BulkUploadAllProductsshow";
+ import BulkUploadProduct from "./Product/BulkUploadProduct";
+ import SellerPerformaInvoiceHistory from "./OrderDetailsPage/SellerOrderHistory";
+-import VoucherCard from "./AddProductAllPages/Voucher";
++import VoucherCard from "./AddProductAllPages/EditVoucherTemplate/Voucher";
++import EditVoucher from "./AddProductAllPages/EditVoucherTemplate/EditVoucher";
+ 
+ const routerdata = createBrowserRouter(
+   [
+     { path: "/", element: <LoginPage />, errorElement: <RouterErrorPage /> },
+-    {
+-      path: "/voucherdesign",
+-      element: <VoucherCard />,
+-      errorElement: <RouterErrorPage />,
+-    },
++    // {
++    //   path: "/voucherdesign",
++    //   element: <VoucherCard />,
++    //   errorElement: <RouterErrorPage />,
++    // },
+     {
+       path: "/forget",
+       element: <ForgetPage />,
+@@ -767,6 +768,11 @@ const routerdata = createBrowserRouter(
+               element: <HotelsGoLive />,
+               errorElement: <RouterErrorPage />,
+             },
++            {
++              path: "voucherdesign/:id",
++              element: <VoucherCard />,
++              errorElement: <RouterErrorPage />,
++            },
+           ],
+         },
+ 

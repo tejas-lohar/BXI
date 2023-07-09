@@ -1,0 +1,81 @@
+:root {
+  --primary-color: #6b7a99;
+}
+
+.you-may-like {
+  margin-top: 80px;
+}
+
+.you-may-like .heading {
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 25px;
+  color: var(--primary-color);
+}
+
+.you-may-like .view-all {
+  font-size: 14px;
+  text-transform: none;
+}
+
+.you-may-like .product-wrapper {
+  flex-wrap: wrap;
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  flex-direction: row;
+}
+
+.you-may-like .card {
+  box-shadow: none;
+  padding: 27px;
+  border-radius: 20px;
+  margin: 10px 0;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  -ms-border-radius: 20px;
+  -o-border-radius: 20px;
+}
+
+.you-may-like .card .img {
+  width: 280px;
+  height: 210px;
+  border-radius: 10px;
+  display: block;
+  margin: 0 auto;
+}
+
+.you-may-like .card .content-wrapper {
+  margin-top: 36px;
+}
+
+.you-may-like .card .title {
+  font-size: 20px;
+  font-family: "Poppins";
+  font-weight: 600;
+  line-height: 30px;
+  color: #141414;
+}
+
+.you-may-like .card .ellipsis {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.you-may-like .card .grey {
+  font-family: "Poppins";
+  color: #717171;
+}
+
+.you-may-like .card .price {
+  font-weight: 700;
+  font-size: 16px;
+  margin-left: 0;
+}
+
+.you-may-like .card .description {
+  font-weight: 400;
+  font-size: 12px;
+  margin-top: 5px;
+}

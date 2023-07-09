@@ -1,0 +1,75 @@
+/* Dropdown CSS Start */
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  float: left;
+  display: none;
+  min-width: 160px;
+  list-style: none;
+  font-size: 14px;
+  background-color: #fff;
+}
+
+.dropdown > li {
+  display: block;
+  clear: both;
+  color: #333;
+  width: auto;
+  height: 48px;
+  line-height: 48px;
+  cursor: pointer;
+}
+/* .dropdown > li:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+} */
+.dropdownsubmenu {
+  position: relative;
+  /* background: url('data:image/svg+xml;utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="%23888" d="M10,17L15,12L10,7V17Z"></path></svg>')
+    97% / 24px no-repeat; */
+}
+.dropdownsubmenu .dropdown {
+  top: 0px;
+  left: 100%;
+  display: block;
+  visibility: hidden;
+  opacity: 0;
+  transition: 0.4s;
+}
+.dropdownsubmenu:hover > .dropdown {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* Dropdown CSS End */
+
+.parent:active,
+.parent:focus-within > .dropdown,
+open.dropdown {
+  display: block;
+  position: relative;
+}
+.menu {
+  width: 60px;
+  height: 20px;
+  background: #e6e9ee;
+  align-items: center;
+  padding: 10px 14px;
+  background: #eee;
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  text-align: center;
+  outline: 0;
+  border: 1px solid #e6e9ee;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.parent {
+  margin: 60px;
+  font-family: "Roboto", sans-serif;
+}

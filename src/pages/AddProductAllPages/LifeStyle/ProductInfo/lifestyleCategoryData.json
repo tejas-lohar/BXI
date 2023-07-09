@@ -1,0 +1,99 @@
+[
+  {
+    "Name": "Makeup",
+    "MainData": [
+      {
+        "Name": "Face",
+        "Data": [
+          "Face Primer",
+          "Concealer",
+          "Foundation",
+          "Compact",
+          "Contour",
+          "Loose Powder",
+          "Tinted Moisturizer",
+          "Blush",
+          "Bronzer",
+          "BB & CC Cream",
+          "Highlighters",
+          "Setting Spray",
+          "Makeup Remover",
+          "Sindoor"
+        ]
+      },
+      {
+        "Name": "Eyes",
+        "Data": [
+          "Kajal",
+          "Eyeliner",
+          "Mascara",
+          "Eye Shadow",
+          "EyeBrow Enhancers",
+          "Eye Primer",
+          "False Eyelashes",
+          "Eye Makeup Remover",
+          "Under Eye Concealer",
+          "Contact Lenses"
+        ]
+      },
+      {
+        "Name": "Makeup Kits & Combos",
+        "Data": ["Makeup Kits", "Makeup Combos"]
+      },
+      {
+        "Name": "Lips",
+        "Data": [
+          "Lipstick",
+          "Liquid Lipstick",
+          "Lip Crayon",
+          "Lip Gross",
+          "Lip Liner",
+          "Lip Plumper",
+          "Lip Stain"
+        ]
+      },
+      {
+        "Name": "Nails",
+        "Data": [
+          "Nail Polish",
+          "Nail Art Kits",
+          "Nail Care",
+          "Nail Polish Remover"
+        ]
+      },
+      {
+        "Name": "Tools & Brushes",
+        "Data": [
+          "Face Brush",
+          "Eye Brush",
+          "Lip Brush",
+          "Brushes Sets",
+          "Brush Cleaners",
+          "Sponges & Applicators",
+          "Eyelash Curlers",
+          "Tweezers",
+          "Sharpeners",
+          "Mirrors",
+          "Makeup Pouches"
+        ]
+      },
+      {
+        "Name": "Multi-Functional Makeup Palettes",
+        "Data": ["Multi-Functional Makeup Palettes"]
+      },
+      {
+        "Name": "Top Brands",
+        "Data": [
+          "Kay Beauty",
+          "Huda Beauty",
+          "Charlotte Tilbury",
+          "M.A.C",
+          "Maybelline New York",
+          "L'Oreal Paris",
+          "Lakme",
+          "Nyx Pro.Makeup"
+        ]
+      }
+    ]
+  }
+]

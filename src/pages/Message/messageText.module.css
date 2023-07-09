@@ -1,0 +1,51 @@
+.bubble {
+  position: relative;
+  background: #485bff;
+  border-radius: 20px 20px 20px 0px;
+}
+.bubbleSender {
+  position: relative;
+  background: #f1f0f0;
+  border-radius: 20px 20px 20px 0px;
+}
+
+.bubble:after {
+  content: "";
+  position: absolute;
+  display: block;
+  width: 0;
+  z-index: 1;
+  border-style: solid;
+  border-width: 20px 20px 0 0;
+  border-color: #445fd2 transparent transparent transparent;
+  top: 40px;
+  left: 94%;
+  /* margin-left: -10px; */
+}
+.bubbleSender:after {
+  content: "";
+  position: absolute;
+  display: block;
+  width: 0;
+  z-index: 1;
+  border-style: solid;
+  border-width: 20px 20px 0 0;
+  border-color: #f1f0f0 transparent transparent transparent;
+  top: 55px;
+  right: 87%;
+}
+/* .bubbleSender:after {
+  content: "";
+  position: absolute;
+  display: block;
+  width: 0;
+  z-index: 1;
+  border-style: solid;
+  border-width: 20px 20px 0 0;
+  border-color: #f1f0f0 transparent transparent transparent;
+  top: 20px;
+  right: 90%;
+} */
+.input[type="file"]::file-selector-button {
+  display: none;
+}
