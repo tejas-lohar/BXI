@@ -3,10 +3,19 @@ version: 0.2
    pre_build:
      commands:
        - echo Installing source NPM dependencies...
-       - npm ci --legacy-peer-deps
+       - npm install
    build:
      commands:
        - echo Build started on `date`
        - echo Compiling the dist folder
        - export NODE_OPTIONS="--max-old-space-size=3072"
-       - npm run build
+       - npm run-script build:prod
+   post_build:
+     commands:
+       - echo Build completed on `date`
+       - cp appspec.yml dist/
+       - cp -r scripts/ dist/
+ # Include only the files required for your application to run.
+ artifacts:
+   files:
+     - dist/*/
