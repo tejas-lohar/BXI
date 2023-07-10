@@ -9,7 +9,7 @@ phases:
       - echo Build started on `date`
       - echo Compiling the dist folder
       - export NODE_OPTIONS="--max-old-space-size=3072"
-      - npm run-script build:prod
+      - npm run build:prod
   post_build:
     commands:
       - echo Build completed on `date`
