@@ -16,7 +16,6 @@ phases:
   post_build:
     commands:
       - echo Build completed on `date`
-      - cp package.json /home/ec2-user/project
       - cp appspec.yml node_modules/
       - cp -r scripts/ node_modules/
 artifacts:
