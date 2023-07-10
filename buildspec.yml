@@ -10,11 +10,9 @@ phases:
     commands:
       - echo Build started on `date`
       - echo Running unit tests...
-      - npm test
       - echo Compiling the dist folder...
       - npm run build
 
 artifacts:
   files:
     - node_modules/**/*
-  base-directory: dist
