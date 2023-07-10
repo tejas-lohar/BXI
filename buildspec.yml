@@ -4,7 +4,7 @@ phases:
   pre_build:
     commands:
       - echo Installing source NPM dependencies...
-      - npm ci --only=prod
+      - npm ci --legacy-peer-deps=prod
 
   build:
     commands:
