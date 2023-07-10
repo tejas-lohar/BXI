@@ -11,8 +11,13 @@ phases:
       - echo Build started on `date`
       - echo Running unit tests...
       - echo Compiling the dist folder...
+      - export NODE_OPTIONS="--max-old-space-size=3072"
       - npm run build
-
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - cp appspec.yml node_modules/
+      - cp -r scripts/ node_modules/
 artifacts:
   files:
     - node_modules/**/*
