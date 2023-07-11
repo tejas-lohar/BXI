@@ -17,7 +17,7 @@ phases:
     commands:
       - echo Build completed on `date`
       - cp appspec.yml node_modules/
-      - cp -r scripts/ node_modules/
+      - cp -r script/ node_modules/
 artifacts:
   files:
     - node_modules/**/*
